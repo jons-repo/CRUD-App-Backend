@@ -17,12 +17,13 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+//handling id request > single student
 router.get("/:id", async (req, res, next) => {
   const studentId = req.params.id;
 
   try {
     const singleStudent = await Student.findByPk(studentId, {
-      include: Campus, //include the associated campus model to get access to data?
+      include: Campus, //include the associated campus model to get access to data
     });
 
     singleStudent

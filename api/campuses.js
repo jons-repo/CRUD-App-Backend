@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { Campus } = require("../db/models");
+const { Campus, Student } = require("../db/models");
 
 // Root here is localhost:8080/api/campuses/
 
-router.get("/hit", async (req, res, next) => {
+//handling all campuses request 
+router.get("/", async (req, res, next) => {
   try {
     const allCampuses = await Campus.findAll();
     console.log(allCampuses);
@@ -15,5 +16,23 @@ router.get("/hit", async (req, res, next) => {
     next(error);
   }
 });
+
+//handling id request > single campus 
+router.get("/:id", async (req, res, next) => {
+  const campusId = req.params.id;
+
+  try {
+    const singleCampus = await Campus.findByPk(campusId, {
+      include: Student, //Include the associated student model
+    });
+    singleCampus
+      ? res.status(200).json(singleCampus)
+      : res.status(404).send("Campus data not found");
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 
 module.exports = router;
