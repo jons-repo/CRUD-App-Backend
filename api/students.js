@@ -7,7 +7,7 @@ const { Student, Campus } = require("../db/models");
 //get all student
 router.get("/", async (req, res, next) => {
   try {
-    const allStudents = await Student.findAll();
+    const allStudents = await Student.findAll({include: Campus});
 
     allStudents
       ? res.status(200).json(allStudents) // if allStudents is truthy
