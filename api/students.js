@@ -35,9 +35,26 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.post("/addStudent", async (req, res, next) => {
-  //should try handling empty req body
-  const createStudent = await Student.create(req.body);
-  res.send(createStudent);
+  //handled empty req body
+  //handled gpa over and under value
+  try {
+    if (!req.body) {
+      throw new Error ("Empty request body")
+    } 
+
+    const { gpa } = req.body;
+
+    if (gpa < 0.0 || gpa > 4.0) {
+      throw new Error ("Invalid GPA, GPA should be between 0.0 and 4.0");
+    }
+
+    const createStudent = await Student.create(req.body);
+    res.send(createStudent);
+
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+ 
 });
 
 module.exports = router;

@@ -34,9 +34,20 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.post("/addCampus", async (req, res, next) => {
-  //should try handling empty req body
-  const createCampus = await Campus.create(req.body);
-  res.send(createCampus);
+  //handled empty req body
+  
+
+  try {
+    if (!req.body) {
+      throw new Error ("Empty request body")
+    } 
+    const createCampus = await Campus.create(req.body);
+    res.send(createCampus);
+
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+
 });
 
 
