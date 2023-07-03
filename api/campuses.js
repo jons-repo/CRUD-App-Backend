@@ -33,6 +33,11 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.post("/addCampus", async (req, res, next) => {
+  //should try handling empty req body
+  const createCampus = await Campus.create(req.body);
+  res.send(createCampus);
+});
 
 
 module.exports = router;
