@@ -34,7 +34,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.get("/addStudent", async (req, res, next) => {
+router.post("/addStudent", async (req, res, next) => {
   //should try handling empty req body
   const createStudent = await Student.create(req.body);
   res.send(createStudent);
