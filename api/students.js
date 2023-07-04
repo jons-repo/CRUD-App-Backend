@@ -57,4 +57,27 @@ router.post("/addStudent", async (req, res, next) => {
  
 });
 
+router.put("/:studentId", async (req, res, next) => {
+  try{
+    
+    const studentId = req.params.studentId;
+    
+    const updateData = req.body;
+
+    const student = await Student.findByPk(studentId, {include : Campus});
+    console.log(updateData);
+
+    if(!student) {
+      throw new Error ("Cannot find the student");
+    }
+
+    await student.update(updateData);
+    const updatedStudent = await Student.findbyId
+
+
+    res.send(updateData);
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+})
 module.exports = router;
