@@ -57,4 +57,47 @@ router.post("/addStudent", async (req, res, next) => {
  
 });
 
+router.put("/:id", async (req, res, next) => {
+  const studentId = req.params.id;
+  const updatedData = req.body;
+
+  try {
+    const updatedStudent = await Student.update(updatedData, {
+      where: { id: studentId },
+    });
+
+    if (updatedStudent[0] === 0) {
+      
+      return res.status(404).send("Student Not Found");
+    }
+
+    const updatedStudentInstance = await Student.findByPk(studentId, {
+      include: Campus,
+    });
+
+    res.status(200).json(updatedStudentInstance);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:id", async (req, res, next) => {
+  const studentId = req.params.id;
+
+  try {
+    const deletedStudent = await Student.destroy({
+      where: { id: studentId },
+    });
+
+    if (deletedStudent === 0) {
+      
+      return res.status(404).send("Student Not Found");
+    }
+
+    res.status(200).send("Student Deleted Successfully");
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
