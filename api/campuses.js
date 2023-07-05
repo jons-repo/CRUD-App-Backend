@@ -50,5 +50,49 @@ router.post("/addCampus", async (req, res, next) => {
 
 });
 
+router.put("/:id", async (req, res, next) => {
+  const campusId = req.params.id;
+  const updatedData = req.body;
+
+  try {
+    const updatedCampus = await Campus.update(updatedData, {
+      where: { id: campusId },
+    });
+
+    if (updatedCampus[0] === 0) {
+
+      return res.status(404).send("Campus Not Found");
+    }
+
+    const updatedCampusInstance = await Campus.findByPk(campusId, {
+      include: Student,
+    });
+
+    res.status(200).json(updatedCampusInstance);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:id", async (req, res, next) => {
+  const campusId = req.params.id;
+
+  try {
+    const deletedCampus = await Campus.destroy({
+      where: { id: campusId },
+    });
+
+    if (deletedCampus === 0) {
+
+      return res.status(404).send("Campus Not Found");
+    }
+
+    res.status(200).send("Campus Deleted Successfully");
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 
 module.exports = router;
