@@ -11,6 +11,10 @@ app.use(cors())
 app.use(express.urlencoded({ extended: false }));
 // Mount on API
 
+app.get('/', (req, res) => {
+  res.send('Hello 🎉 \n Append /api/students for students or \n /api/campuses for campuses')
+})
+
 app.use("/api", require("./api"));
 console.log("here in index.js");
 
