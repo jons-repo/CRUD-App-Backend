@@ -5,6 +5,7 @@ const { name } = require("../package.json");
 // knd = `postgres://knd:2782001knd@localhost:5433/${name}`
 const db = new Sequelize(process.env.POSTGRES_URL_NON_POOLING + "?sslmode=require" , {
   logging: false,
+  dialectModule: require('pg'),
 });
 
 module.exports = db;
